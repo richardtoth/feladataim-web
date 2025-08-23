@@ -1,10 +1,12 @@
 <script setup lang="ts">
 
+import NavigationBar from "~/components/NavigationBar.vue";
 </script>
 
 <template>
   <div>
-    <h1 class="text-5xl text-red">Landing</h1>
+    <NavigationBar />
+    <slot/>
   </div>
 </template>
 

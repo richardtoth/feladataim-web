@@ -3,9 +3,9 @@
 </script>
 
 <template>
-  <div>
-    <h1 class="text-5xl text-red">Landing</h1>
-  </div>
+<div>
+  <slot/>
+</div>
 </template>
 
 <style scoped>
