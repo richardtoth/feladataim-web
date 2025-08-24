@@ -1,10 +1,11 @@
 <script setup lang="ts">
 
+import PageHeading from "~/components/PageHeading.vue";
 </script>
 
 <template>
   <div>
-    <h1 class="text-5xl text-red">Reggeli tervezés</h1>
+    <PageHeading>Reggeli tervezés</PageHeading>
   </div>
 </template>
 
