@@ -4,7 +4,7 @@
 
 <template>
   <div>
-    <h1 class="text-5xl text-red">Áttekintés</h1>
+    <PageHeading>Áttekintés</PageHeading>
   </div>
 </template>
 

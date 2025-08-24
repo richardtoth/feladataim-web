@@ -4,7 +4,7 @@
 
 <template>
   <div>
-    <h1>Profile</h1>
+    <PageHeading>Profile</PageHeading>
   </div>
 </template>
 

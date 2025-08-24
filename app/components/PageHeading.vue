@@ -3,9 +3,9 @@
 </script>
 
 <template>
-  <div>
-    <h1>Todos</h1>
-  </div>
+  <h1 class="text-5xl text-red mb-8">
+    <slot/>
+  </h1>
 </template>
 
 <style scoped>
