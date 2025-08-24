@@ -7,7 +7,7 @@ import AppHeader from "~/components/AppHeader.vue";
   <div class="min-h-screen flex flex-col">
     <div class="container mx-auto flex-1">
       <AppHeader/>
-      <div class="border border-white/20 py-12 px-5 rounded">
+      <div class="border border-white/20 py-8 px-5 rounded">
         <slot/>
       </div>
     </div>
