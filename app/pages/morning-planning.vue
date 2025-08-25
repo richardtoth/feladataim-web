@@ -9,7 +9,7 @@ import type {Todo} from "~/types/todo";
 const {storeTodo, listTodos} = useApi();
 
 const schema = z.object({
-  title: z.string().nonempty('Title cannot be empty').min(3, 'Must be at least 3 characters')
+  title: z.string().min(3, 'Must be at least 3 characters')
 })
 
 type TodoForm = z.infer<typeof schema>
@@ -27,7 +27,7 @@ async function loadTodos() {
 }
 await loadTodos()
 
-async function onSubmit(event: FormSubmitEvent<Todo>) {
+async function onSubmit(event: FormSubmitEvent<TodoForm>) {
   const newTodo: { title: string } = {
     title: event.data.title,
   }
