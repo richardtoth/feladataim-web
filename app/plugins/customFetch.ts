@@ -10,7 +10,6 @@ export default defineNuxtPlugin((nuxtApp) => {
         headers: {
             Accept: 'application/json',
             Referer: config.public.baseUrl,
-            Origin: config.public.baseUrl,
         },
         onRequest({options}) {
             if (import.meta.server && nuxtApp.ssrContext?.event) {
