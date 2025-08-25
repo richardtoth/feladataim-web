@@ -33,11 +33,14 @@ async function onSubmit(event: FormSubmitEvent<Todo>) {
   <div>
     <PageHeading>Reggeli tervezés</PageHeading>
     <UForm :schema="schema" :state="state" class="space-y-4" @submit="onSubmit">
-      <UInput ref="titleInput" v-model="state.title" name="titleInput" class="mr-2" placeholder="Todo"/>
-
-      <UButton type="submit" class="cursor-pointer">
-        Mentés
-      </UButton>
+      <div class="flex items-start">
+        <UFormField name="title">
+          <UInput ref="titleInput" v-model="state.title" name="titleInput" class="mr-2" placeholder="Todo"/>
+        </UFormField>
+        <UButton type="submit" class="cursor-pointer">
+          Mentés
+        </UButton>
+      </div>
     </UForm>
   </div>
 </template>
