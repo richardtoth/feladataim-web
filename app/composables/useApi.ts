@@ -2,7 +2,7 @@ import type {Todo} from "~/types/todo";
 
 export const useApi = () => {
     const storeTodo = async (todo: Todo) => {
-        return useCustomFetch('/todos', {
+        return useCustomRequest('/todos', {
             method: 'POST',
             body: todo,
         })
