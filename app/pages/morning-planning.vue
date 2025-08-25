@@ -4,24 +4,39 @@ import PageHeading from "~/components/PageHeading.vue";
 import * as z from 'zod'
 import type {FormSubmitEvent} from '@nuxt/ui'
 import {useApi} from "~/composables/useApi";
+import type {Todo} from "~/types/todo";
 
-const {storeTodo} = useApi();
+const {storeTodo, listTodos} = useApi();
 
-const schema: z.ZodType<Todo> = z.object({
+const schema = z.object({
   title: z.string().nonempty('Title cannot be empty').min(3, 'Must be at least 3 characters')
 })
 
-const state = reactive<Todo>({
+type TodoForm = z.infer<typeof schema>
+
+const state = reactive<TodoForm>({
   title: '',
 })
 
-const toast = useToast()
 
 const titleInput = useTemplateRef('titleInput')
 
+const todos = ref<Todo[]>([])
+async function loadTodos() {
+  todos.value = await listTodos()
+}
+await loadTodos()
+
 async function onSubmit(event: FormSubmitEvent<Todo>) {
-  await storeTodo({...event.data});
-  toast.add({title: 'Success', description: 'The form has been submitted.', color: 'success'});
+  const newTodo: { title: string } = {
+    title: event.data.title,
+  }
+
+  const res = await storeTodo(newTodo);
+  if (res?.data) {
+    todos.value = [res.data, ...todos.value]
+  }
+
   state.title = '';
   await nextTick();
   setTimeout(() => titleInput.value?.inputRef?.focus(), 0)
@@ -42,6 +57,9 @@ async function onSubmit(event: FormSubmitEvent<Todo>) {
         </UButton>
       </div>
     </UForm>
+
+    <UTable :data="todos" class="flex-1"/>
+
   </div>
 </template>
 
