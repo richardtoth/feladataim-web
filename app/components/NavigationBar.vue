@@ -3,10 +3,10 @@ import {computed} from 'vue'
 import type {NavigationMenuItem} from '@nuxt/ui'
 import {useAuth} from '~/composables/useAuth'
 
-const {user, logout} = useAuth()
+const {authenticatedUser, logout} = useAuth()
 
 const items = computed<NavigationMenuItem[][]>(() => {
-  const leftMenu: NavigationMenuItem[] = user.value
+  const leftMenu: NavigationMenuItem[] = authenticatedUser.value
       ? [
         {label: 'Reggeli tervezés', icon: 'i-lucide-sunrise', to: '/morning-planning'},
         {label: 'Mai feladatok', icon: 'i-lucide-check-square', to: '/todays-tasks'},
@@ -17,7 +17,7 @@ const items = computed<NavigationMenuItem[][]>(() => {
         {label: 'Nyitólap', icon: 'i-lucide-home', to: '/'}
       ]
 
-  const rightMenu: NavigationMenuItem[] = user.value
+  const rightMenu: NavigationMenuItem[] = authenticatedUser.value
       ? [
         {label: 'Kijelentkezés', icon: 'i-lucide-log-out', onClick: logout, class: 'cursor-pointer'}
       ]

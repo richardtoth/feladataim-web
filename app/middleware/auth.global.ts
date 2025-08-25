@@ -1,22 +1,22 @@
 export default defineNuxtRouteMiddleware(async (to) => {
-    const { user, fetchUser } = useAuth()
+    const { authenticatedUser, fetchUser } = useAuth()
 
     const protectedRoutes = ['/overview', '/morning-planning', '/informations', '/todays-tasks']
 
-    if (protectedRoutes.includes(to.path) && !user.value) {
+    if (!authenticatedUser.value) {
         try {
             await fetchUser()
         } catch {
-            user.value = null
+            authenticatedUser.value = null
         }
     }
 
-    if (!user.value && protectedRoutes.includes(to.path)) {
+    if (!authenticatedUser.value && protectedRoutes.includes(to.path)) {
         return navigateTo('/login')
     }
 
     const guestOnlyRoutes = ['/login', '/registration']
-    if (user.value && guestOnlyRoutes.includes(to.path)) {
+    if (authenticatedUser.value && guestOnlyRoutes.includes(to.path)) {
         return navigateTo('/morning-planning')
     }
 })

@@ -1,61 +1,64 @@
 import type {LoginCredentials, RegisterData, User} from "~/types/auth";
 
 export const useAuth = () => {
-    const user = useState<User | null>('auth_user', () => null)
-    const config = useRuntimeConfig()
+    const authenticatedUser = useState<User | null>('auth_user', () => null)
     const router = useRouter()
 
+    const setUserData = (user: User | null) => {
+        authenticatedUser.value = user ?? null;
+    };
+
+    const clearUserData = () => {
+        authenticatedUser.value = null;
+    };
+
     const getCsrfCookie = async () => {
-        await $fetch('/sanctum/csrf-cookie', {
-            baseURL: config.public.apiUrl,
-            credentials: 'include',
-        })
+        await useCustomRequest('/sanctum/csrf-cookie', {})
     }
 
     const login = async (credentials: LoginCredentials) => {
         await getCsrfCookie()
-        await useCustomFetch('/login', {
+        await useCustomRequest('/login', {
             method: 'POST',
             body: credentials,
         })
-        await fetchUser()
-        if (user.value) {
-            await router.push('/morning-planning')
-        }
+        const user = await useCustomRequest<User>('/user')
+        setUserData(user)
+        await router.push('/morning-planning')
     }
 
     const register = async (data: RegisterData) => {
         await getCsrfCookie()
-        await useCustomFetch('/register', {
+        await useCustomRequest('/register', {
             method: 'POST',
             body: data,
         })
-        await fetchUser()
-        if (user.value) {
-            await router.push('/morning-planning')
-        }
+        const user = await useCustomRequest<User>('/user')
+        setUserData(user)
+        await router.push('/morning-planning')
     }
 
     const logout = async () => {
-        await useCustomFetch('/logout', { method: 'POST' })
-        user.value = null
+        await useCustomRequest('/logout', {method: 'POST'})
+        clearUserData()
         console.log('User logged out')
         await router.push('/')
     }
 
     const fetchUser = async () => {
         try {
-            const { data } = await useCustomFetch<User>('/user');
-            user.value = data.value ?? null;
-            console.log('user: ' + user.value)
+            const {data} = await useCustomFetch<User>('/user')
+            const userData = data.value ?? null
+            if (userData) {
+                setUserData(userData)
+            }
         } catch {
-            user.value = null;
-            console.log('User not found')
+            clearUserData()
         }
     }
 
     return {
-        user,
+        authenticatedUser,
         login,
         register,
         logout,
