@@ -5,6 +5,7 @@ import * as z from 'zod'
 import type {FormSubmitEvent} from '@nuxt/ui'
 import {useApi} from "~/composables/useApi";
 import type {Todo} from "~/types/todo";
+import type {TodoCreate} from "~/types/requests/todoCreate";
 
 const {storeTodo, listTodos} = useApi();
 
@@ -22,17 +23,17 @@ const state = reactive<TodoForm>({
 const titleInput = useTemplateRef('titleInput')
 
 const todos = ref<Todo[]>([])
+
 async function loadTodos() {
   todos.value = await listTodos()
 }
+
 await loadTodos()
 
 async function onSubmit(event: FormSubmitEvent<TodoForm>) {
-  const newTodo: { title: string } = {
-    title: event.data.title,
-  }
+  const payload: TodoCreate = {title: event.data.title}
 
-  const res = await storeTodo(newTodo);
+  const res = await storeTodo(payload)
   if (res?.data) {
     todos.value = [res.data, ...todos.value]
   }
